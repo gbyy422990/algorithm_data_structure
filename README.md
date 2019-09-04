@@ -113,3 +113,89 @@ int bsearch(int l, int r){
     return l;
 }
 ```
+
+## 高精度加法模版
+
+// C = A + B, A >= 0, B >= 0    进位问题
+
+**大整数存储**：c++中没有大整数，大整数都是按照数组存起来的，第0位存的是大整数的个位。为什么这么存呢？因为加法和乘法可能会出现进位的情况，所以高位存在后面比较方便进位。
+
+```
+vector<int> add(vector<int> &A, vector<int> &B){
+    //C用来存结果
+    vector<int> C;
+    int t = 0;
+    for(int i = 0; i < A.size() || i < B.size()){
+        if(i < A.size()) t += A[i];
+        if(i < B.size()) t += B[i];
+        C.push_back(t % 10);
+        t /= 10;
+    }
+    if (t) C.push_back(1);
+    return C
+}
+```
+
+
+
+## 高精度减法模版
+
+/ C = A - B, 满足A >= B, A >= 0, B >= 0   借位问题
+
+```
+vector<int> sub(vector<int> A, vector<int> B){
+    vector<int> C;
+    //是否借位
+    int t = 0;
+    for(int i = 0; i < A.size(); i++){
+        t = A[i] - t;
+        if(i < B.size()) t -= B[i];
+        C.push_back((t + 10) % 10);
+        if(t < 0) t = 1;
+        else t = 0
+    }
+    while(C.size() > 1 && C.back() == 0) C.pop_back();
+    return C;
+}
+```
+
+
+
+## 高精度乘法模版
+
+// C = A * b, A >= 0, b > 0
+
+```
+vector<int> mul(vector<int> &A, int b)
+{
+    vector<int> C;
+    int t = 0;
+    for (int i = 0; i < A.size() || t; i ++ )
+    {
+        if (i < A.size()) t += A[i] * b;
+        C.push_back(t % 10);
+        t /= 10;
+    }
+    return C;
+}
+```
+
+
+
+## 高精度除法模版
+
+// A / b = C ... r, A >= 0, b > 0
+```vector<int> div(vector<int> &A, int b, int &r)
+{
+    vector<int> C;
+    r = 0;
+    for (int i = A.size() - 1; i >= 0; i -- )
+    {
+        r = r * 10 + A[i];
+        C.push_back(r / b);
+        r %= b;
+    }
+    reverse(C.begin(), C.end());
+    while (C.size() > 1 && C.back() == 0) C.pop_back();
+    return C;
+}```
