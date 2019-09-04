@@ -188,7 +188,8 @@ vector<int> mul(vector<int> &A, int b)
 ## 高精度除法模版
 
 // A / b = C ... r, A >= 0, b > 0
-```vector<int> div(vector<int> &A, int b, int &r)
+```
+vector<int> div(vector<int> &A, int b, int &r)
 {
     vector<int> C;
     r = 0;
@@ -201,4 +202,5 @@ vector<int> mul(vector<int> &A, int b)
     reverse(C.begin(), C.end());
     while (C.size() > 1 && C.back() == 0) C.pop_back();
     return C;
-}```
+}
+```
