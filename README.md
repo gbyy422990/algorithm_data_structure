@@ -101,7 +101,7 @@ else mid 是绿色， 分界点target在mid 左侧， 不包括mid, [l,r]->[l,mi
 if mid 是红色，[l,r]->[mid,r]  ->[l,r]，死循环。
 当我们将区间[l, r]划分成[l, mid - 1] 和[mid, r]时，更新操作是 r = mid - 1或者 l = mid,此时为了防止死循环，计算mid 时要加1。
 
-<img src="https://github.com/gbyy422990/algorithm_data_structure/tree/master/images/image-20190904073106195.png" width="20%" height="20%">
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190904073106195.png" width="20%" height="20%">
 
 ```
 int bsearch(int l, int r){
