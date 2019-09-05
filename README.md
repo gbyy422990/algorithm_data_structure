@@ -117,6 +117,18 @@ int bsearch(int l, int r){
 }
 ```
 
+二分法大家可以结合刷一下leetcode如下的题目
+
+leetcode 69. Sqrt(x) 
+leetcode 35. Search Insert Position
+leetcode 34. Find First and Last Position of Element in Sorted Array
+leetcode 74. Search a 2D Matrix
+leetcode 153. Find Minimum in Rotated Sorted Array
+leetcode 33. Search in Rotated Sorted Array
+leetcode 278. First Bad Version
+leetcode 162. Find Peak Element 
+leetcode 287. Find the Duplicate Number
+leetcode 275. H-Index II 
 ## 高精度加法模版
 
 // C = A + B, A >= 0, B >= 0    进位问题
