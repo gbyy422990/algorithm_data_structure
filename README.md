@@ -26,6 +26,33 @@ void quick_sort(int s[], int l, int r){
 }
 ```
 
+这里可以延伸出来**快速选择算法**：选择数列里第k小的数是多少
+
+思路和快排基本相似，但是每次只需要递归一边就可以了，思路如下：
+
+1、确定分界点flag，可以算则s[l], s[(l+r) / 2], s[r]；
+
+2、调整区间，使得左边区间的元素都小于flag，右边区间的元素都大于flag；
+
+3、判断左边区间的数的个数sl和k的关系，如果sl>=k，那么第k小的数就一定在左边区间；反之如果右边区间的数的个数sr>k，那么第k小的数就一定在右边区间。
+
+```
+int quick_search(int s[], int l, int r, int k){
+    //只有一个元素的情况
+    if(l == r) return s[l];
+    //调整区间，使得左边区间的元素都小于flag，右边区间的元素都大于flag
+    int flag = s[l], i = l - 1, j = r + 1;
+    while(i < j){
+        while(s[i++] < flag);
+        while(s[--j] > flag);
+        if(i < j) swap(s[i], s[j]);
+    }
+    //左边区间的数的个数sl和k的关系
+    int sl = j - l + 1;
+    if(sl >= k) quick_search(s, l, j, k);
+    else quick_search(s, j + 1, r, k - sl);
+}
+```
 
 
 ## 归并排序算法 -- 分治 nlog(n)
