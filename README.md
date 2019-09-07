@@ -49,8 +49,8 @@ int quick_search(int s[], int l, int r, int k){
     }
     //左边区间的数的个数sl和k的关系
     int sl = j - l + 1;
-    if(sl >= k) quick_search(s, l, j, k);
-    else quick_search(s, j + 1, r, k - sl);
+    if(sl >= k) return quick_search(s, l, j, k);
+    else return quick_search(s, j + 1, r, k - sl);
 }
 ```
 
