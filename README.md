@@ -249,6 +249,37 @@ vector<int> div(vector<int> &A, int b, int &r)
 }
 ```
 
+
+## 一维前缀和
+
+```S[i] = a[1] + a[2] + ... a[i]
+S[i] = a[1] + a[2] + ... a[i]
+a[l] + ... + a[r] = S[r] - S[l - 1]
+```
+
+
+
+## 二维前缀和
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190907185544691.png" width="60%" height="60%">  
+
+1、s[i, j] 的含义表示上图绿色区域的和如何计算？
+
+```
+S[i, j] = S[i-1, j] + S[i, j-1] + S[i-1, j-1] + a[i][j]
+```
+
+2、（x1，y1）和（x2，y2）这一子矩阵中所有数的和如何计算？
+
+```
+S[i, j] = 第i行j列格子左上部分所有元素的和
+以(x1, y1)为左上角，(x2, y2)为右下角的子矩阵的和为：
+S[x2, y2] - S[x1 - 1, y2] - S[x2, y1 - 1] + S[x1 - 1, y1 - 1]
+```
+
+
+
+
 ## 双指针算法模版
 
 比如上面的快排和归并排序都有用到。
