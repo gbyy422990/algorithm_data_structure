@@ -425,6 +425,7 @@ void remove(){
 ## 双链表
 
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908160733523.png" width="100%" height="100%"> 
+
 ```
 // e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
 int e[N], l[N], r[N], idx;
