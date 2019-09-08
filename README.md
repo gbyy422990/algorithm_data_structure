@@ -378,7 +378,7 @@ struct Node{
 
 单链表的样子：
 
-<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908103009608.png" width="60%" height="80%">  
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908103009608.png" width="100%" height="100%">  
 
 每个node点都有两个属性，e[N]和ne[N]，那么e[N]和ne[N]是怎么关联起来的呢？
 
@@ -421,4 +421,39 @@ void remove(){
 }
 ```
 
+
+## 双链表
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908160733523.png" width="100%" height="100%"> 
+```
+// e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
+int e[N], l[N], r[N], idx;
+
+// 初始化
+void init()
+{
+    //0是左端点，1是右端点
+    r[0] = 1, l[1] = 0;
+    idx = 2;
+}
+
+// 在节点k的右边插入一个数a
+void insert(int a, int k)
+{
+    e[idx] = a;
+    l[idx] = k, r[idx] = r[k];
+    l[r[k]] = idx, r[k] = idx ++ ;
+}
+
+//在节点k的左边插入一个数a，这个地方可是实现另外的插入函数，也可以等价于，在节点k的左边的节点的右边插入一个
+//数a，即直接调用 insert(a, l[k]);
+
+
+// 删除节点a
+void remove(int a)
+{
+    l[r[a]] = l[a];
+    r[l[a]] = r[a];
+}
+```
 
