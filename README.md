@@ -361,4 +361,64 @@ void merge(vector<PII> &segs)
 ```
 
 
+# 二、数据结构
+
+## 单链表
+
+一般用结构体加指针的方式来实现链表如下：
+
+```
+//动态链表
+struct Node{
+    int val;
+    Node *next;
+}
+//面试中用的多，笔试题不多，因为每次创建新的链表都要调一次new函数，那么是非常慢的，效率不高，所以笔试不常用。改进一下可以使用，比如一开始就初始化所有节点，但是这样子本质和数组模拟单链表没区别。
+```
+
+单链表的样子：
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908103009608.png" width="60%" height="80%">  
+
+每个node点都有两个属性，e[N]和ne[N]，那么e[N]和ne[N]是怎么关联起来的呢？
+
+```
+//head表示头节点下标
+//e[i]表示节点i的值
+//ne[i]表示节点i的next的指针是多少
+//idx存储当前已经用到了哪个点
+int head, e[N], ne[N], idx;
+//初始化
+void init(){
+    head = -1;
+    idx = 0; //表示当前可以从0号点开始分配
+}
+
+//在链表表头插入一个a
+void add_to_head(int a){
+    e[idx] = a;
+    ne[idx] = head;
+    head = idx;
+    idx++;
+}
+
+//把a插到下标是k的点的后面
+void insert(int a, int k){
+    e[idx] = a;
+    ne[idx] = ne[k];
+    ne[k] = idx;
+    idx++;
+}
+
+//将下标是k的点后面的点删掉
+void remove(int k){
+    ne[k] = ne[ne[k]];
+}
+
+//把表头节点删除，需要保证表头节点存在
+void remove(){
+    head = ne[head];
+}
+```
+
 
