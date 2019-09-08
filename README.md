@@ -458,3 +458,44 @@ void remove(int a)
 }
 ```
 
+
+## 栈（先进后出）
+
+```
+//tt表示栈顶
+int stk[N], tt = 0;
+
+//往栈中插入一个元素x
+stk[++tt] = x;
+
+//弹出一个元素
+tt--;
+
+//判断栈是否为空
+if(tt > 0) not empty;
+else empty;
+
+//栈顶
+ skt[tt];
+
+```
+
+
+
+## 队列(先进先出)
+```
+// hh表示队头，tt表示队尾
+int q[N], hh = 0; tt = -1;
+
+//向队尾插入元素
+q[++tt] = x;
+//在队头探出元素x
+hh++;
+
+//判断是否为空
+if(hh <= tt) not empty;
+else empty;
+
+//取出队头元素
+q[hh];
+```
