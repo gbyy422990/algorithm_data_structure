@@ -172,7 +172,7 @@ vector<int> add(vector<int> &A, vector<int> &B){
     //C用来存结果
     vector<int> C;
     int t = 0;
-    for(int i = 0; i < A.size() || i < B.size()){
+    for(int i = 0; i < A.size() || i < B.size(); i++){
         if(i < A.size()) t += A[i];
         if(i < B.size()) t += B[i];
         C.push_back(t % 10);
@@ -190,6 +190,15 @@ vector<int> add(vector<int> &A, vector<int> &B){
 / C = A - B, 满足A >= B, A >= 0, B >= 0   借位问题
 
 ```
+//先要比较一下A和B的大小，如果A < B， 那么就先变成B - A再加上负号 
+bool camp(vector<int> &A, vector<int> &B){
+    if(A.size() != B.size()) return A.size() > B.size();
+    for(int i = A.size() - 1; i >= 0; i--){
+        if(A[i] != B[i]) return A[i] > B[i];
+    }
+    return true;
+}
+
 vector<int> sub(vector<int> A, vector<int> B){
     vector<int> C;
     //是否借位
