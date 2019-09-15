@@ -544,7 +544,8 @@ for(int i = 1, j = 0; i <= m; i++){
 
 如下所示，Trie树会先创建一个root根节点，然后开始插入，红色标记位置，即为一个字符串的结尾
 
-<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190915101417926.png" width="80%" height="80%"> 
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190915101417926.png" width="80%" height="80%">   
+ 
 ### Trie树的查找
 
 就是开始从root节点开始查找，如果发现有标记结尾，即存在这个字符串，比如abc即可找到，但是abcf不存在，且abcd在Trie有但是未被标记所以也不存在。
