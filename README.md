@@ -508,3 +508,74 @@ else empty;
 //取出队头元素
 q[hh];
 ```
+
+
+## KMP算法模版
+
+youtube有个不错的视频：https://www.youtube.com/watch?v=3IFxpozBs2I
+
+```
+// s[]是模式串，p[]是模板串, n是p的长度，m是s的长度, ne[]是prefix table
+
+//求next的过程
+for(int i = 2, j = 0; i <= n; i++){
+    while(j && p[i] != p[j + 1]) j = ne[j];
+    if(p[i] == p[j + 1]) j++;
+    ne[i] = j;
+}
+
+
+//kmp匹配过程
+for(int i = 1, j = 0; i <= m; i++){
+    while(j && s[i] != p[j + 1]) j = ne[j];
+    if(s[i] == p[j + 1]) j++;
+    if(j == n){
+        //匹配成功
+        j = ne[j];
+    }
+}
+```
+
+
+
+## Trie树（高效的存储和查找字符串集合的数据结构）
+
+###  Trie树的存储
+
+如下所示，Trie树会先创建一个root根节点，然后开始插入，红色标记位置，即为一个字符串的结尾
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190915101417926.png" width="80%" height="80%"> 
+### Trie树的查找
+
+就是开始从root节点开始查找，如果发现有标记结尾，即存在这个字符串，比如abc即可找到，但是abcf不存在，且abcd在Trie有但是未被标记所以也不存在。
+
+```
+int son[N][26], cnt[N], idx;
+// 下标是0号点既是根节点，又是空节点
+// son[][]存储树中每个节点的子节点
+// cnt[]存储以每个节点结尾的单词数量
+
+// 插入一个字符串
+void insert(char str[]){
+    int p = 0; //从根节点开始
+    for(int i = 0; str[i]; i++){ //c++中字符串结尾是0，所以可以拿str[i]来判断是不是到了结尾
+        int u = str[i] - 'a';    
+        if(!son[p][u]) son[p][u] = ++idx;
+        p = son[p][u];
+    }
+    cnt[p]++;
+}
+
+//查询操作，返回字符串出现的次数
+int query(char str[]){
+    int p = 0;
+    for(int i = 0; str[i]; i++){
+        int u = str[i] - 'a';
+        if(!son[p][u]) return 0;
+        p = son[p][u];
+    }
+    return cnt[p];
+}
+```
+
+
