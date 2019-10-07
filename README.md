@@ -264,8 +264,7 @@ a[l] + ... + a[r] = S[r] - S[l - 1]
 
 
 ## 二维前缀和模版
-
-![image-20190907185544691](/Users/bingao/Library/Application Support/typora-user-images/image-20190907185544691.png)
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190907185544691.png" width="60%" height="100%">
 
 1、s[i, j] 的含义表示上图绿色区域的和如何计算？
 
@@ -385,9 +384,7 @@ struct Node{
 ``````
 
 单链表的样子：
-
-![image-20190908103009608](/Users/bingao/Documents/algorithm_data_structure/images/image-20190908103009608.png)
-
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908103009608.png" width="60%" height="100%">
 每个node点都有两个属性，e[N]和ne[N]，那么e[N]和ne[N]是怎么关联起来的呢？
 
 ``````
@@ -431,8 +428,7 @@ void remove(){
 
 ## 双链表
 
-![image-20190908160733523](/Users/bingao/Documents/algorithm_data_structure/images/image-20190908160733523.png)
-
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908160733523.png" width="60%" height="100%">
 ``````
 // e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
 int e[N], l[N], r[N], idx;
@@ -551,8 +547,8 @@ for(int i = 1, j = 0; i <= m; i++){
 
 如下所示，Trie树会先创建一个root根节点，然后开始插入，红色标记位置，即为一个字符串的结尾
 
-![image-20190915101417926](/Users/bingao/Documents/algorithm_data_structure/images/image-20190915101417926.png)
 
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190915101417926.png" width="60%" height="100%">
 ### Trie树的查找
 
 就是开始从root节点开始查找，如果发现有标记结尾，即存在这个字符串，比如abc即可找到，但是abcf不存在，且abcd在Trie有但是未被标记所以也不存在。
@@ -605,8 +601,8 @@ int query(char str[]){
 
 问题2：如何求x的集合编号？while(p[x] != x) x = p[x];这个操作还是比较慢的，但是可以优化为路径优化方式。
 
-![image-20191005105306206](/Users/bingao/Documents/leetcode/image-20191005105306206.png)
 
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191005105306206.png" width="60%" height="100%">
 问题3：如何合并两个集合？ px是x的集合编号，py是y的集合编号。p[x] = y
 
 ####  (1)朴素并查集：
@@ -652,8 +648,7 @@ else 不在一个集合内
 
 5、修改任意一个元素。          heap[k] = x; down(k); up(k)
 
-![image-20191005125611293](/Users/bingao/Documents/leetcode/image-20191005125611293.png)
-
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191005125611293.png" width="60%" height="100%">
 ``````
 // h[N]存储堆中的值, h[1]是堆顶，x的左儿子是2x, 右儿子是2x + 1
 // ph[k]存储第k个插入的点在堆中的位置
@@ -720,8 +715,7 @@ int find(int x){
 
 比如把-10^9 ~ 10^9的数映射到10^5区间上，那么我们就开一个长度为10^5的数组，然后计算每一个x的h（x）的值，然后插入到对应数组的下表的下面，如果两个x的映射值即h（x）相同，那么我们就再拉一条链出来即可。如下图：
 
-![image-20191006095244546](/Users/bingao/Documents/leetcode/image-20191006095244546.png)
-
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191006095244546.png" width="60%" height="100%">
 一般算法题只会考察插入和查找操作。
 
 插入：比如插入x，我们先计算h（x）的哈希值是多少，然后插入到对应的数组的链上即可。
