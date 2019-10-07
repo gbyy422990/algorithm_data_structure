@@ -211,6 +211,214 @@ vector<int> sub(vector<int> A, vector<int> B){
         t = A[i] - t;
 ```
 
+
+# 一、基础算法
+
+## 快排算法模版 nlog(n)
+
+整体算法步骤：
+
+1、确定分界点flag，可以算则s[l], s[(l+r) / 2], s[r]；
+
+2、调整区间，使得左边区间的元素都小于flag，右边区间的元素都大于flag；
+
+3、递归处理左右两段区间。
+
+```
+void quick_sort(int s[], int l, int r){
+    //判断一下数组s是否只有一个元素或为空
+    if(l >= r) return;
+    int flag = s[r], int i = l - 1, j = r + 1;
+    while(l < r){
+        do i++; while(s[i] < flag);
+        do j--; while(s[j] > flag);
+        if(i < j) swap(s[i], s[j]);
+    }
+    quick_sort(s, l, j);
+    quick_sort(s, j + 1, r);
+}
+```
+
+这里可以延伸出来**快速选择算法**：选择数列里第k小的数是多少
+
+思路和快排基本相似，但是每次只需要递归一边就可以了，思路如下：
+
+1、确定分界点flag，可以算则s[l], s[(l+r) / 2], s[r]；
+
+2、调整区间，使得左边区间的元素都小于flag，右边区间的元素都大于flag；
+
+3、判断左边区间的数的个数sl和k的关系，如果sl>=k，那么第k小的数就一定在左边区间；反之如果右边区间的数的个数sr>k，那么第k小的数就一定在右边区间。  
+//时间复杂度：假设区间长度为n，递归一次后为n/2，第三次n/4，......，  
+
+所以时间复杂度为：n + n/2 + n/4 + n/8 + ... = n(1+1/2+1/4+...) > 2n，即时间复杂度为O（n）  
+
+```
+int quick_search(int s[], int l, int r, int k){
+    //只有一个元素的情况
+    if(l == r) return s[l];
+    //调整区间，使得左边区间的元素都小于flag，右边区间的元素都大于flag
+    int flag = s[l], i = l - 1, j = r + 1;
+    while(i < j){
+        while(s[i++] < flag);
+        while(s[--j] > flag);
+        if(i < j) swap(s[i], s[j]);
+    }
+    //左边区间的数的个数sl和k的关系
+    int sl = j - l + 1;
+    if(sl >= k) return quick_search(s, l, j, k);
+    else return quick_search(s, j + 1, r, k - sl);
+}
+```
+
+## 归并排序算法 -- 分治 nlog(n)
+
+整体算法步骤：
+
+1、以数组的中心点分左右两边，确定分界点：mid = l + r >> 1;（快排是随机从数组里取一个数，归并是取数组下标的中心）；
+
+2、归并排序左右两部分；
+
+3、归并，合二为一。
+
+Note: 归并排序是稳定的，快速排序是不稳定的。稳定是指原序列中两个数相同的情况下，排序后两个数的位置不发生变化，即称该算法是稳定的。那么快排能否变成稳定的呢？答案自然是可以的，我们可以将元素ai变成一个pair，即<ai, i>。
+
+```
+//归并排序需要一个额外的数组
+int tmp[N];
+void merge_sort(int s[], int l, int r){
+    if(l >= r) return;
+    //第一步选取分界点
+    int mid = l + r >> 1;
+    //第二步归并左右两部分
+    merge_sort(s, l, mid);
+    merge_sort(s, mid + 1, r);
+    //第三步归并合二为一
+    //k表示在tmp里面已经有多少个元素了，即已经排序了多少个了，i和j为两个双指针
+    int k = 0, i = l, j = mid + 1;
+    while(i <= mid && j <= r){
+        if(s[i] < s[mid]) tmp[k++] = s[i++];
+        else if(s[i] >= s[mid]) tmp[k++] = s[j++];
+    }
+    //此时可能左半边活着有半边没有循环完
+    while(i <= mid) tmp[k++] = s[i++];
+    while(j < = r) tmp[k++] = s[j++];
+    //把tmp里面的值存回原数组中
+    for (i = l, j = 0; i <= r; i++, j++ ) s[i] = tmp[j];
+}
+```
+
+
+
+## 二分算法模版
+
+整体算法步骤：假设目标值在闭区间[l, r]中，每次将区间长度缩小一半，当l = r 时，就找到了目标值。
+
+情况一：如下图，目标值target可以取到右边界。
+
+mid = l + r >> 1， （下取整）
+if mid是绿色,分界点target在mid左侧，可能包括mid, [l,r]->[l,mid], r = mid
+else mid是红色，分界点target在mid右侧，不包括mid , [l,r]->[mid+1,r], l = mid + 1
+
+当我们将区间[l, r]划分成[l, mid], [mid + 1， r]时，其更新操作是 r = mid 或者 l = mid + 1。
+
+![image-20190907185544691](/Users/bingao/Library/Application Support/typora-user-images/image-20190904073014460.png)
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190904073106195.png" width="60%" height="100%">
+```
+int bsearch(int l, int r){
+    while(l < r){
+        int mid = l + r >> 1;
+        if(check(mid)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+```
+
+
+
+情况二：mid = l + r +1 >> 1，（上取整）
+if mid 是红色，分界点target在mid 右侧，可能包括mid, [l,r]->[mid,r], l = mid 
+else mid 是绿色， 分界点target在mid 左侧， 不包括mid, [l,r]->[l,mid - 1] r = mid - 1
+
+注意：
+如果模板二用mid = l + r >> 1，（下取整）
+当l = r - 1， mid = l + r >>1 == 2l + 1 >>1  ==  l
+if mid 是红色，[l,r]->[mid,r]  ->[l,r]，死循环。
+当我们将区间[l, r]划分成[l, mid - 1] 和[mid, r]时，更新操作是 r = mid - 1或者 l = mid,此时为了防止死循环，计算mid 时要加1。
+
+![image-20190907185544691](/Users/bingao/Library/Application Support/typora-user-images/image-20190904073014460.png)
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190904073106195.png" width="60%" height="100%">
+```
+int bsearch(int l, int r){
+    while(l < r){
+        int mid = l + r + 1 >> 1;
+        if(check(mid)) l = mid;
+        else r = mid - 1;
+    }
+    return l;
+}
+```
+
+二分法大家可以结合刷一下leetcode如下的题目
+
+leetcode 69. Sqrt(x)   
+leetcode 35. Search Insert Position  
+leetcode 34. Find First and Last Position of Element in Sorted Array  
+leetcode 74. Search a 2D Matrix  
+leetcode 153. Find Minimum in Rotated Sorted Array  
+leetcode 33. Search in Rotated Sorted Array  
+leetcode 278. First Bad Version  
+leetcode 162. Find Peak Element   
+leetcode 287. Find the Duplicate Number  
+leetcode 275. H-Index II   
+
+## 高精度加法模版
+
+// C = A + B, A >= 0, B >= 0    进位问题
+
+**大整数存储**：c++中没有大整数，大整数都是按照数组存起来的，第0位存的是大整数的个位。为什么这么存呢？因为加法和乘法可能会出现进位的情况，所以高位存在后面比较方便进位。
+
+```
+vector<int> add(vector<int> &A, vector<int> &B){
+    //C用来存结果
+    vector<int> C;
+    int t = 0;
+    for(int i = 0; i < A.size() || i < B.size(); i++){
+        if(i < A.size()) t += A[i];
+        if(i < B.size()) t += B[i];
+        C.push_back(t % 10);
+        t /= 10;
+    }
+    if (t) C.push_back(1);
+    return C
+}
+```
+
+
+
+## 高精度减法模版
+
+/ C = A - B, 满足A >= B, A >= 0, B >= 0   借位问题
+
+```
+//先要比较一下A和B的大小，如果A < B， 那么就先变成B - A再加上负号 
+bool camp(vector<int> &A, vector<int> &B){
+    if(A.size() != B.size()) return A.size() > B.size();
+    for(int i = A.size() - 1; i >= 0; i--){
+        if(A[i] != B[i]) return A[i] > B[i];
+    }
+    return true;
+}
+
+vector<int> sub(vector<int> A, vector<int> B){
+    vector<int> C;
+    //是否借位
+    int t = 0;
+    for(int i = 0; i < A.size(); i++){
+        t = A[i] - t;
+        
+```
+
 ## 高精度乘法模版
 
 // C = A * b, A >= 0, b > 0
@@ -256,6 +464,7 @@ vector<int> div(vector<int> &A, int b, int &r)
 
 
 ## 一维前缀和模版
+
 ```S[i] = a[1] + a[2] + ... a[i]
 S[i] = a[1] + a[2] + ... a[i]
 a[l] + ... + a[r] = S[r] - S[l - 1]
@@ -264,13 +473,14 @@ a[l] + ... + a[r] = S[r] - S[l - 1]
 
 
 ## 二维前缀和模版
+
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190907185544691.png" width="60%" height="100%">
 
 1、s[i, j] 的含义表示上图绿色区域的和如何计算？
 
-``````
+```
 S[i, j] = S[i-1, j] + S[i, j-1] - S[i-1, j-1] + a[i][j]
-``````
+```
 
 2、（x1，y1）和（x2，y2）这一子矩阵中所有数的和如何计算？
 
@@ -343,6 +553,7 @@ int find(int x) // 找到第一个大于等于x的位置
 ## 区间合并模版
 
 // 将所有存在交集的区间合并
+
 ```void merge(vector<PII> &segs)
 //将所有存在交集的区间合并
 void merge(vector<PII> &segs)
@@ -370,24 +581,24 @@ void merge(vector<PII> &segs)
 
 # 二、数据结构
 
-##单链表
+## 单链表
 
 一般用结构体加指针的方式来实现链表如下：
 
-``````
+```
 //动态链表
 struct Node{
     int val;
     Node *next;
 }
 //面试中用的多，笔试题不多，因为每次创建新的链表都要调一次new函数，那么是非常慢的，效率不高，所以笔试不常用。改进一下可以使用，比如一开始就初始化所有节点，但是这样子本质和数组模拟单链表没区别。
-``````
+```
 
 单链表的样子：
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908103009608.png" width="60%" height="100%">
 每个node点都有两个属性，e[N]和ne[N]，那么e[N]和ne[N]是怎么关联起来的呢？
 
-``````
+```
 //head表示头节点下标
 //e[i]表示节点i的值
 //ne[i]表示节点i的next的指针是多少
@@ -424,12 +635,11 @@ void remove(int k){
 void remove(){
     head = ne[head];
 }
-``````
+```
 
 ## 双链表
-
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190908160733523.png" width="60%" height="100%">
-``````
+```
 // e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
 int e[N], l[N], r[N], idx;
 
@@ -459,7 +669,7 @@ void remove(int a)
     l[r[a]] = l[a];
     r[l[a]] = r[a];
 }
-``````
+```
 
 
 
@@ -467,7 +677,7 @@ void remove(int a)
 
 单调栈一般用在找到某个数左边最近的比它大活小的数。
 
-``````
+```
 //tt表示栈顶
 int stk[N], tt = 0;
 
@@ -484,7 +694,7 @@ else empty;
 //栈顶
  skt[tt];
 
-``````
+```
 
 
 
@@ -494,7 +704,7 @@ else empty;
 
 也可以通过维护单调性，解决一些区间内最小或最大的问题
 
-``````
+```
 // hh表示队头，tt表示队尾
 int q[N], hh = 0; tt = -1;
 
@@ -509,7 +719,7 @@ else empty;
 
 //取出队头元素
 q[hh];
-``````
+```
 
 
 
@@ -517,7 +727,7 @@ q[hh];
 
 youtube有个不错的视频：https://www.youtube.com/watch?v=3IFxpozBs2I
 
-``````
+```
 // s[]是模式串，p[]是模板串, n是p的长度，m是s的长度, ne[]是prefix table
 
 //求next的过程
@@ -537,7 +747,7 @@ for(int i = 1, j = 0; i <= m; i++){
         j = ne[j];
     }
 }
-``````
+```
 
 
 
@@ -547,13 +757,12 @@ for(int i = 1, j = 0; i <= m; i++){
 
 如下所示，Trie树会先创建一个root根节点，然后开始插入，红色标记位置，即为一个字符串的结尾
 
-
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190915101417926.png" width="60%" height="100%">
 ### Trie树的查找
 
 就是开始从root节点开始查找，如果发现有标记结尾，即存在这个字符串，比如abc即可找到，但是abcf不存在，且abcd在Trie有但是未被标记所以也不存在。
 
-``````
+```
 int son[N][26], cnt[N], idx;
 // 下标是0号点既是根节点，又是空节点
 // son[][]存储树中每个节点的子节点
@@ -581,33 +790,33 @@ int query(char str[]){
     }
     return cnt[p];
 }
-``````
+```
 
 
 
 ## 并查集
 
-####能解决的问题：  
+#### 能解决的问题：  
 
-#####1、将2个集合合并；
+##### 1、将2个集合合并；
 
-#####2、询问两个元素是否在一个集合当中；
+##### 2、询问两个元素是否在一个集合当中；
 
 能用近乎O（1）的时间复杂度完成，并不是完全O(1)。
 
-#####基本原理：每一个集合用一颗树来表示，树根的编号就是整个集合的编号，每个节点存储它的父节点，p[x]代表x的父节点。
+##### 基本原理：每一个集合用一颗树来表示，树根的编号就是整个集合的编号，每个节点存储它的父节点，p[x]代表x的父节点。
 
 问题1：如何判断树根？ if(p[x] == x)
 
 问题2：如何求x的集合编号？while(p[x] != x) x = p[x];这个操作还是比较慢的，但是可以优化为路径优化方式。
 
-
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191005105306206.png" width="60%" height="100%">
+
 问题3：如何合并两个集合？ px是x的集合编号，py是y的集合编号。p[x] = y
 
-####  (1)朴素并查集：
+#### (1)朴素并查集：
 
-``````
+```
 int p[N]; //存储每个点的祖宗节点
 
 // 返回x的祖宗节点（所在集合的编号）
@@ -626,7 +835,7 @@ p[find(a)] = find(b);
 if(find(a) == find(b)) 在一个集合内
 else 不在一个集合内
 
-``````
+```
 
 
 
@@ -649,7 +858,8 @@ else 不在一个集合内
 5、修改任意一个元素。          heap[k] = x; down(k); up(k)
 
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191005125611293.png" width="60%" height="100%">
-``````
+
+```
 // h[N]存储堆中的值, h[1]是堆顶，x的左儿子是2x, 右儿子是2x + 1
 // ph[k]存储第k个插入的点在堆中的位置
 // hp[k]存储堆中下标是k的点是第几个插入的
@@ -686,7 +896,7 @@ void up(int u)
 
 // O(n)建堆
 for (int i = n / 2; i; i -- ) down(i);
-``````
+```
 
 
 
@@ -694,9 +904,9 @@ for (int i = n / 2; i; i -- ) down(i);
 
 #### （1）哈希表的存储方式
 
-####1、开放寻址法（寻找下一个坑位）：
+#### 1、开放寻址法（寻找下一个坑位）：
 
-``````
+```
 //一般这个h要开两倍的大小，null为一个非常大的不在范围内的数。
 int h[N];
 
@@ -709,13 +919,14 @@ int find(int x){
     }
     return t;
 }
-``````
+```
 
-####2、拉链法：
+#### 2、拉链法：
 
 比如把-10^9 ~ 10^9的数映射到10^5区间上，那么我们就开一个长度为10^5的数组，然后计算每一个x的h（x）的值，然后插入到对应数组的下表的下面，如果两个x的映射值即h（x）相同，那么我们就再拉一条链出来即可。如下图：
 
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191006095244546.png" width="60%" height="100%">
+
 一般算法题只会考察插入和查找操作。
 
 插入：比如插入x，我们先计算h（x）的哈希值是多少，然后插入到对应的数组的链上即可。
@@ -724,7 +935,7 @@ int find(int x){
 
 如果要实现删除：我们就额外开一个bool变量，在槽上的点上标记一下即可。
 
-``````
+```
 #include<cstring>
 int h[N], e[N], ne[N], idx;
 //把h[N]全部置为-1；
@@ -744,11 +955,11 @@ bool find(int x){
     }
     return false;
 }
-``````
+```
 
-####（2）字符串的哈希方式
+#### （2）字符串的哈希方式
 
-``````
+```
 核心思想：将字符串看成P进制数，P的经验值是131或13331，取这两个值的冲突概率低
 小技巧：取模的数用2^64，这样直接用unsigned long long存储，溢出的结果就是取模的结果
 
@@ -768,5 +979,4 @@ ULL get(int l, int r)
 {
     return h[r] - h[l - 1] * p[r - l + 1];
 }
-``````
-
+```
