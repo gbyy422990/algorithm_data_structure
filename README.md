@@ -756,6 +756,9 @@ bool find(int x){
 核心思想：将字符串看成P进制数，P的经验值是131或13331，取这两个值的冲突概率低
 小技巧：取模的数用2^64，这样直接用unsigned long long存储，溢出的结果就是取模的结果
 
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191010221020186.png" width="60%" height="100%">
+
 ```
 typedef unsigned long long ULL;
 ULL h[N], p[N]; // h[k]存储字符串前k个字母的哈希值, p[k]存储 P^k mod 2^64
