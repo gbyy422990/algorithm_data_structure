@@ -115,7 +115,7 @@ else mid是红色，分界点target在mid右侧，不包括mid , [l,r]->[mid+1,r
 当我们将区间[l, r]划分成[l, mid], [mid + 1， r]时，其更新操作是 r = mid 或者 l = mid + 1。
 
 ![image-20190907185544691](/Users/bingao/Library/Application Support/typora-user-images/image-20190904073014460.png)
-<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190904073106195.png" width="60%" height="100%">
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20190904073014460.png" width="60%" height="100%">
 ```
 int bsearch(int l, int r){
     while(l < r){
