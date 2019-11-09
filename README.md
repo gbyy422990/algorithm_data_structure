@@ -520,12 +520,18 @@ q[hh];
 ## KMP算法模版
 
 youtube有个不错的视频：https://www.youtube.com/watch?v=3IFxpozBs2I
+https://www.acwing.com/solution/acwing/content/2286/
 
+next数组的含义 : next数组用来存模式串中每个前缀最长的能匹配前缀子串的结尾字符的下标。 next[i] = j 表示下标以i-j为起点，i为终点的后缀和下标以0为起点，j为终点的前缀相等，且此字符串的长度最长。用符号表示为p[0~j] == p[i-j~i]。下面以”ababacd”模式串为例，给出这个串的next数组。  
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191109094358468.png" width="60%" height="100%">
+
+下表从1开始：
 ```
 // s[]是模式串，p[]是模板串, n是p的长度，m是s的长度, ne[]是prefix table
 
 //求next的过程
-for(int i = 2, j = 0; i <= n; i++){
+for(int i = 2, j = 0; i <= m; i++){
     while(j && p[i] != p[j + 1]) j = ne[j];
     if(p[i] == p[j + 1]) j++;
     ne[i] = j;
@@ -533,12 +539,32 @@ for(int i = 2, j = 0; i <= n; i++){
 
 
 //kmp匹配过程
-for(int i = 1, j = 0; i <= m; i++){
+for(int i = 1, j = 0; i <= n; i++){
     while(j && s[i] != p[j + 1]) j = ne[j];
     if(s[i] == p[j + 1]) j++;
-    if(j == n){
+    if(j == m){
         //匹配成功
         j = ne[j];
+    }
+}
+```
+
+下标从0开始：
+
+```
+for (int i = 1, j = -1; i < n; i++){
+    while(j > -1 && p[i] != p[j+1]) j = ne[j];
+    if(p[i] == p[j+1]) j++;
+    ne[i] = j;
+}
+
+for(int i = 0, j = -1; i < m; i++){
+    while(j > -1 && s[i] != p[j+1]) j = ne[j];
+    if(s[i] == p[j+1]) j++;
+    if(j == m - 1){
+        //匹配成功
+        j = ne[j];
+        ////匹配成功后的逻辑    
     }
 }
 ```
