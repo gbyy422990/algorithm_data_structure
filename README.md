@@ -862,3 +862,116 @@ void add(int a, int b)
 idx = 0;
 memset(h, -1, sizeof h);
 ```
+
+### 树与图的遍历
+
+时间复杂度 O(n+m)O(n+m), nn 表示点数，mm 表示边数。
+
+####(1) 深度优先遍历
+
+```
+N表示点的数量，如果是无向图那么链表大小就要2*N
+int h[N], e[2*N]，ne[2*N], idx;
+
+void add(int a, int b){
+    e[idx] = b, ne[idx] = h[a], h[a] = idx++;
+}
+
+int dfs(int u)
+{
+    st[u] = true; // st[u] 表示点u已经被遍历过
+
+    for (int i = h[u]; i != -1; i = ne[i])
+    {
+        int j = e[i];
+        if (!st[j]) dfs(j);
+    }
+}
+
+int main(){
+    cin >> a >> b;
+    add(a, b);
+    //add(b, a) 无向图需要双边
+    return 0;
+}
+```
+
+#### (2) 宽度优先遍历
+
+```
+queue<int> q;
+bool st[N];
+int q[N];
+
+void bfs(){
+    st[1] = true; // 表示1号点已经被遍历过
+    q.push(1);
+
+    while (q.size())
+    {
+        int t = q.front();
+        q.pop();
+
+        for (int i = h[t]; i != -1; i = ne[i])
+        {
+            int j = e[i];
+            if (!s[j])
+            {
+                st[j] = true; // 表示点j已经被遍历过
+                q.push(j);
+            }
+        }
+    }
+}
+
+
+//数组模拟队列
+void bfs(){
+    int hh = 0, tt = 0;
+    int q[0] = 1;
+    while(tt << hh){
+        int t = q[hh++];
+        for(int i = h[t], i != -1; i = ne[i]){
+            int j = e[i];
+            if(!s[j]){
+                st[j] = true;
+                q[++tt] = j;
+            }
+        }
+    }
+}
+```
+
+
+
+#### 拓扑排序
+
+时间复杂度 O(n+m)O(n+m), nn 表示点数，mm 表示边数。
+
+```
+bool topsort()
+{
+    int hh = 0, tt = -1;
+
+    // d[i] 存储点i的入度
+    for (int i = 1; i <= n; i ++ )
+        if (!d[i])
+            q[ ++ tt] = i;
+
+    while (hh <= tt)
+    {
+        int t = q[hh ++ ];
+
+        for (int i = h[t]; i != -1; i = ne[i])
+        {
+            int j = e[i];
+            if (-- d[j] == 0)
+                q[ ++ tt] = j;
+        }
+    }
+
+    // 如果所有点都入队了，说明存在拓扑序列；否则不存在拓扑序列。
+    return tt == n - 1;
+}
+```
+
