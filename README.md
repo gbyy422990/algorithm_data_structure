@@ -805,3 +805,60 @@ ULL get(int l, int r)
     return h[r] - h[l - 1] * p[r - l + 1];
 }
 ```
+
+## 三、搜索与图论
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191019145810751.png" width="60%" height="100%">
+### DFS（俗称暴搜）
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191111220026735.png" width="60%" height="100%">
+用栈可以保证，下一个拿出来的点，一定是上一个点的邻接点。
+
+### BFS（边权为1的最短路问题可以用bfs求解）
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191111215409163.png" width="60%" height="100%">
+
+
+BFS使用队列，先随机选择一个点比如A，我们把A放入队列里，然后拿出来A并把A的邻接点放入到队列里，即：B和C，然后再把B拿出来，把B的邻接点放进去也就是E，然后把C拿出来，把C的邻接点放进队列，即E。。。。为什么需要队列来实现呢？因为比如我们按照BC的顺序放入队列，那么可以保证B的邻接点一定比C的邻接点先出现。所以可以用队列来保证层的顺序。
+
+
+
+### 树与图的存储
+
+树是一种特殊的图，与图的存储方式相同。
+对于无向图中的边ab，存储两条有向边a->b, b->a。无向图就是一种特殊的有向图。
+因此我们可以只考虑有向图的存储。
+
+**(1) 邻接矩阵:**  g【a】【b】存储边a->b;如果有权重g数组就存储权重，没有权重的话g就是个bool值，true表示有边，false表示无边。邻接矩阵不能存储重边，空间复杂度O(N^2)，比较适合存储稠密的图，稀疏的不适合；
+
+**(2) 邻接表：**
+
+就是每个点都是个单链表。比如下面的图：
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191114080504235.png" width="60%" height="100%">
+上面的图的存储如下：
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191114080541140.png" width="60%" height="100%">
+对每个点我们都开了一个单链表，每个单链表存储这个点可以到的点。
+
+PS：每个单链表里的值的存储顺序没关系。
+
+```
+// 对于每个点k，开一个单链表，存储k所有可以走到的点。h[k]存储这个单链表的头结点
+int h[N], e[N], ne[N], idx;
+
+// 添加一条边a->b
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx++;
+}
+
+// 初始化
+idx = 0;
+memset(h, -1, sizeof h);
+```
