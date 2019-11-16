@@ -975,3 +975,81 @@ bool topsort()
 }
 ```
 
+###最短路
+
+n表示点，m表示边。
+
+m和n是一个范围的称为稀疏图，m和n^2一个范围的称为稠密图。稠密图（用邻接矩阵来存）用朴素Dijkstra算法，稀疏图（用邻接表来存）用堆优化的Dijkstra算法。
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115072531054.png" width="100%" height="100%">
+
+#### 朴素Dijstra算法
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115075701830.png" width="100%" height="100%">
+举个例子：
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115080544980.png" width="60%" height="60%">
+
+1）先初始化距离，点1的距离是0，其余的都是inf；
+
+2）迭代：（绿色表示确定的点，红色表示待定）
+
+​            找到当前所有没有确定的点中的最小距离，即0；
+
+​            更新一下这个点到其他点的距离，1号点的邻边有两个，到2号点和3号点。即：
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115080848875.png" width="60%" height="60%">
+
+
+​         继续迭代： 找到当前所有没有确定的点中的最小距离，即2；
+
+​         更新一下这个点到其他点的距离，2号点的邻边有一个，到3号点。即：
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115080957070.png" width="60%" height="60%">
+​      下一轮迭代：
+
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115081024864.png" width="60%" height="60%">
+
+
+####朴素dijkstra算法 
+
+时间复杂是 O(n^2+m), n 表示点数，m 表示边
+
+```
+//n表示点数， m表示边。如果m和n^2为一个数量级，就是稠密图，使用邻接矩阵来存图
+int n, m; 
+int g[N][N]; //存储每条边
+int dist[N]; //存储1号点到每个点的最短距离
+int st[N]; //存储每个点的最短路是否已经确定
+
+// 求1号点到n号点的最短路，如果不存在则返回-1
+int dijstra(){
+    先初始化距离，点1的距离是0，其余的都是inf；
+    memset(dist, ox3f, sizeof(dist));
+    dist[1] = 0;
+    
+    // 迭代n次，每次可以确定一个点到起点的最短路
+    for(int i = 0; i < n; i++){
+        // 在还未确定最短路的点中，寻找距离最小的点
+        int t = -1;
+        
+        //在所有st[j]=false的点中找到距离最小的点
+        for(int j = 1; j <= n; j++){
+            //当前点没有访问过 且 t=-1 或者 当前距离小于旧距离 则t值更新为j
+            if(!st[j] && (t == -1 || dist[j] < dist[t]))
+                t = j;
+        }
+        st[t] = true;
+        
+        for(int i = 1; i <= n; i++){
+            if(!st[i]) dist[i] = min(dist[i], dist[t] + g[t][i]);
+        } 
+    }
+    if(dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+```
+
