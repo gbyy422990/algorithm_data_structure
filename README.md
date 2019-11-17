@@ -975,7 +975,7 @@ bool topsort()
 }
 ```
 
-###最短路
+### 最短路
 
 n表示点，m表示边。
 
@@ -1014,7 +1014,7 @@ m和n是一个范围的称为稀疏图，m和n^2一个范围的称为稠密图�
 <img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191115081024864.png" width="60%" height="60%">
 
 
-####朴素dijkstra算法 
+#### 朴素dijkstra算法 
 
 时间复杂是 O(n^2+m), n 表示点数，m 表示边
 
@@ -1053,7 +1053,7 @@ int dijstra(){
 }
 ```
 
-####堆优化版dijkstra算法
+#### 堆优化版dijkstra算法
 
 时间复杂度 O(mlogn), n 表示点数，m 表示边数。
 
@@ -1094,7 +1094,7 @@ int dijkstra(){
 
 
 
-####Bellman-Ford算法（处理有负权边）
+#### Bellman-Ford算法（处理有负权边）
 
 时间复杂度 O(nm), n 表示点数，m 表示边数。
 
@@ -1137,7 +1137,7 @@ int bellman_ford(){
 
 
 
-####spfa 算法（队列优化的Bellman-Ford算法）
+#### spfa 算法（队列优化的Bellman-Ford算法）
 
 时间复杂度 平均情况下 O(m)，最坏情况下 O(nm), n 表示点数，m 表示边数
 
