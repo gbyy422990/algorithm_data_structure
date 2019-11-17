@@ -1053,3 +1053,136 @@ int dijstra(){
 }
 ```
 
+####堆优化版dijkstra算法
+
+时间复杂度 O(mlogn), n 表示点数，m 表示边数。
+
+```
+typedef pair<int, int> PII;   <边权，点>
+
+int n; // 点的数量
+int h[N], w[N], e[N], ne[N], idx; //邻接表存储所有边, w存储边权
+int dist[N];
+bool st[N];
+
+// 求1号点到n号点的最短距离，如果不存在，则返回-1
+int dijkstra(){
+    memset(dist, 0x3f, sizeof(dist);
+    dist[1] = 0;
+    priority_queue<PII, vector<PII>, greater<PII>> heap; //创建小根堆
+    heap.push({0, 1})； ////第一维是距离，第二维是节点编号
+    while(heap.size()){
+        auto t = heap.top();
+        heap.pop();
+        
+        int ver = t.second, distance = t.first;
+        if(st[ver]) continue;   //防止重复遍历很多点，时间复杂度保证是 mlogn
+        st[ver] = true;
+        
+        for(int i = h[ver]; i != -1; i = ne[i]){
+            int j = e[i];
+            if(dist[j] > distance + w[i]){
+                dist[j] = distance + w[i];
+                heap.push({dist[j], j});
+            }
+        }
+    }
+    if (dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+```
+
+
+
+####Bellman-Ford算法（处理有负权边）
+
+时间复杂度 O(nm), n 表示点数，m 表示边数。
+
+<img src="https://github.com/gbyy422990/algorithm_data_structure/blob/master/images/image-20191117143455635.png" width="100%" height="100%">
+
+
+
+如果图中存在负权回路且该负环在我要求的1到n这个路径上，如上图右上角的图，当算从1到5的距离时，这个回路转一圈距离就会减1，转无穷圈的话距离就是负无穷了，即不存在了。
+
+```
+//在模板题中需要对下面的模板稍作修改，加上备份数组，详情见模板题
+
+int n, m;  // n表示点数，m表示边数
+int dist[N];
+
+// 定义边的结构体，a表示出点，b表示入点，w表示边的权重
+struct Edge{
+    int a, b ,w;
+} edges[M];
+
+int bellman_ford(){
+    memset(dist, 0x3f, sizeof(dist));
+    dist[1] = 0;
+    
+    // 如果第n次迭代仍然会松弛三角不等式，就说明存在一条长度是n+1的最短路径，由抽屉原理，路径中至少存在两个相同的点，说明图中存在负权回路。
+    for (int i = 0; i < n; i ++ )
+    {
+        for (int j = 0; j < m; j ++ )
+        {
+            int a = edges[j].a, b = edges[j].b, w = edges[j].w;
+            if (dist[b] > dist[a] + w)
+                dist[b] = dist[a] + w;
+        }
+    }
+
+    if (dist[n] > 0x3f3f3f3f / 2) return -1;
+    return dist[n];
+}
+```
+
+
+
+####spfa 算法（队列优化的Bellman-Ford算法）
+
+时间复杂度 平均情况下 O(m)，最坏情况下 O(nm), n 表示点数，m 表示边数
+
+```
+int n;      // 总点数
+int h[N], w[N], e[N], ne[N], idx;       // 邻接表存储所有边
+int dist[N];        // 存储每个点到1号点的最短距离
+bool st[N];     // 存储每个点是否在队列中
+
+// 求1号点到n号点的最短路距离，如果从1号点无法走到n号点则返回-1
+int spfa()
+{
+    memset(dist, 0x3f, sizeof dist);
+    dist[1] = 0;
+
+    queue<int> q;
+    q.push(1);
+    st[1] = true;
+
+    while (q.size())
+    {
+        auto t = q.front();
+        q.pop();
+
+        st[t] = false;
+
+        for (int i = h[t]; i != -1; i = ne[i])
+        {
+            int j = e[i];
+            if (dist[j] > dist[t] + w[i])
+            {
+                dist[j] = dist[t] + w[i];
+                if (!st[j])     // 如果队列中已存在j，则不需要将j重复插入
+                {
+                    q.push(j);
+                    st[j] = true;
+                }
+            }
+        }
+    }
+
+    if (dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+```
+
+
+
