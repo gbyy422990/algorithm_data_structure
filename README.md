@@ -1,3 +1,6 @@
+### update2020.3.9：
+更新了算法模版，在pdf这个文件里，这个readme部分有的地方有小错误懒得纠正了，建议看pdf版本。
+
 ### update 2019.9.28:
 
 leetcode已经开始刷了，代码和解析见：https://github.com/gbyy422990/Leetcode_c-
